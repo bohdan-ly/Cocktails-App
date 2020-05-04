@@ -1,19 +1,44 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import styled from 'styled-components/native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+import { HomeScreen, FiltersScreen } from './screens';
+import { Fontisto } from '@expo/vector-icons';
+
+const Stack = createStackNavigator();
+function App() {
+	return (
+		<NavigationContainer>
+			<Stack.Navigator>
+				<Stack.Screen
+					name="Drinks"
+					component={HomeScreen}
+					options={({ navigation }) => ({
+						headerRight: () => (
+							<FiltersButton onPress={() => navigation.navigate('Filters')}>
+								<Fontisto name="filter" size={28} />
+							</FiltersButton>
+						),
+						headerTitleStyle: {
+							fontSize: 24,
+							fontWeight: '500'
+						}
+					})}
+				/>
+				<Stack.Screen name="Filters" component={FiltersScreen} />
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const FiltersButton = styled.TouchableOpacity`
+	align-items: center;
+	justify-content: center;
+	height: 29px;
+	margin-right: 20px;
+`;
+
+export default App;
